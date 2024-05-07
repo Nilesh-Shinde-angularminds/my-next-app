@@ -37,17 +37,16 @@ import { Label } from "@/components/ui/label"
 
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Dialog from './Dialog'
 
 import {
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
+    ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    getPaginationRowModel,
+    useReactTable,
+} from "@tanstack/react-table"
 
 
 
@@ -57,62 +56,100 @@ import {
 
 
 export default function TableDemo() {
-    const [data, setData] = useState([
+    const [data, setData] = useState<any>([
         {
-            EmployeeId: "INV001",
+            employeeId: "AM1001",
             name: "Rutuparn",
             department: "Management",
-            paymentMethod: "Credit Card",
         },
         {
-            EmployeeId: "INV002",
+            employeeId: "AM1002",
             name: "Akshay",
             department: "Human resource",
-            paymentMethod: "PayPal",
         },
         {
-            EmployeeId: "INV003",
+            employeeId: "AM3003",
             name: "Nilesh",
             department: "Development",
-            paymentMethod: "Bank Transfer",
         },
         {
-            EmployeeId: "INV004",
+            employeeId: "AM5004",
             name: "Shrikant",
             department: "Management",
-            paymentMethod: "Credit Card",
         },
         {
-            EmployeeId: "INV005",
+            employeeId: "AM2005",
             name: "Prathamesh",
             department: "Development",
-            paymentMethod: "PayPal",
         },
         {
-            EmployeeId: "INV006",
+            employeeId: "AM5006",
             name: "Pushkraj",
             department: "Management",
-            paymentMethod: "Bank Transfer",
         },
         {
-            EmployeeId: "INV007",
+            employeeId: "AM2007",
             name: "Sagar",
             department: "Human resource",
-            paymentMethod: "Credit Card",
         },
     ])
+    const [openDialog, setOpenDialog] = useState(false)
+    const [addEmp, setAddEmp] = useState({
+        employeeId: "",
+        name: '',
+        department: ""
+    })
+    const [searchStr, setSearchString] = useState("")
+    const [currentPage, setCurrentPage] = useState(0)
+    const [totalItemsPerPage, stTotalItemsPerPage] = useState(6)
+    const [totalNoOfPages, setTotalNoOfPages] = useState(0)
 
-    const HandleClick = () => {
-
-
-
+    const AddEmployeeFunction = (obj: any) => {
+        if (obj.employeeId) {
+            let newData = data.map((item: any, index: any) => item.employeeId == obj.employeeId ? ({ ...item, ...obj }) : item)
+            setData(newData)
+            setOpenDialog(false)
+        }
+        else {
+            let Id = "AM" + Math.floor(1000 + Math.random() * 9000)
+            setData((prev: any) => ([...prev, { ...obj, employeeId: Id }]))
+            setOpenDialog(false)
+        }
     }
 
-    const DeleteItem = (ind: any) => {
-        let newData = data.filter((item, index) => index != ind)
+    const DeleteItem = (id: any) => {
+        let newData = data.filter((item: any) => item.employeeId != id)
         setData(newData)
     }
-    const [openDialog, setOpenDialog] = useState(false)
+   
+    const displayItems = (): any[] => {
+        let start = currentPage * totalItemsPerPage
+        let end = start + totalItemsPerPage
+        let filteredArray = data.filter((item: any) => item.name.toLowerCase().includes(searchStr.toLowerCase())).slice(start, end)
+        return filteredArray
+    }
+    const getTotalNoOfPages = () => {
+        return Math.ceil(data.filter((item: any) => item.name.toLowerCase().includes(searchStr.toLowerCase())).length / totalItemsPerPage)
+    }
+    useEffect(() => {
+        setTotalNoOfPages(getTotalNoOfPages())
+    }, [totalItemsPerPage,searchStr])
+
+    const handlePrevious = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNext = () => {
+        if (totalNoOfPages - 1 > currentPage) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePageClick = (page: any) => {
+        setCurrentPage(page);
+    };
 
     return (
         <Card>
@@ -122,28 +159,28 @@ export default function TableDemo() {
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
                             type="search"
+                            onChange={(e) => setSearchString(e.target.value)}
                             placeholder="Search products..."
                             className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
                         />
                     </div>
                 </form>
-                <Button className="m-3 h-8">Add+</Button>
+                    <Button className="m-5 h-8" onClick={() => setOpenDialog(true)}>Add+</Button>
             </div>
             <Card className="m-3">
                 <Table>
-                    {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-[100px]">Emp. Id</TableHead>
+                            <TableHead className="font-medium">Sr. No.</TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead>Department</TableHead>
                             <TableHead className="text-center">Action</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {data.map((item, index) => (
-                            <TableRow key={item.EmployeeId}>
-                                <TableCell className="font-medium">{item.EmployeeId}</TableCell>
+                        {displayItems()?.map((item: any, index: any) => (
+                            <TableRow key={item.name + index} >
+                                <TableCell className="font-medium">{item.employeeId}</TableCell>
                                 <TableCell>{item.name}</TableCell>
                                 <TableCell>{item.department}</TableCell>
                                 <TableCell className="text-center">
@@ -156,40 +193,39 @@ export default function TableDemo() {
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
                                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                            <DropdownMenuItem onSelect={(e) => { e.preventDefault(); setOpenDialog(true) }} >Edit</DropdownMenuItem>
-                                            <Dialog open={openDialog} setOpenDialog={setOpenDialog} />
-                                            <DropdownMenuItem onClick={() => DeleteItem(index)}>Delete</DropdownMenuItem>
+                                            <DropdownMenuItem onSelect={(e) => { e.preventDefault(); setOpenDialog(true); setAddEmp(prev => ({ ...prev, name: item.name, department: item.department, employeeId: item.employeeId })) }} >Edit</DropdownMenuItem>
+                                            <DropdownMenuItem onClick={() => DeleteItem(item.employeeId)}>Delete</DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
-                    <TableFooter>
-                        <TableRow>
-                            {/* <TableCell colSpan={3}>Total</TableCell> */}
-                            {/* <TableCell className="text-right">$2,500.00</TableCell> */}
-                        </TableRow>
-                    </TableFooter>
+
                 </Table>
             </Card>
-
             <Pagination className="mt-5 p-5 justify-end">
                 <PaginationContent>
                     <PaginationItem>
-                        <PaginationPrevious href="#" />
+                        <PaginationPrevious onClick={handlePrevious} />
                     </PaginationItem>
-                    <PaginationItem>
-                        <PaginationLink href="#">1</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationEllipsis />
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationNext href="#" />
+                    {Array(totalNoOfPages).fill(0).map((_, index) => (
+                        <PaginationItem key={index}>
+                            <PaginationLink
+
+                                isActive={index === currentPage}
+                                onClick={() => handlePageClick(index)}
+                            >
+                                {index + 1}
+                            </PaginationLink>
+                        </PaginationItem>
+                    ))}
+                    <PaginationItem >
+                        <PaginationNext onClick={handleNext} />
                     </PaginationItem>
                 </PaginationContent>
             </Pagination>
+            <Dialog open={openDialog} AddEmployeeFunction={AddEmployeeFunction} item={addEmp} setAddEmp={setAddEmp} setOpenDialog={setOpenDialog} />
         </Card>
     )
 }

@@ -11,18 +11,31 @@ import {
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useEffect, useState } from "react"
 
 export default function DialogDemo(props: any) {
-    const { open, setOpenDialog } = props
+    const { open, AddEmployeeFunction, item,setOpenDialog } = props
+    const[data, setData]=useState({
+        employeeId:"",
+        name:"",
+        department:""
+    })
+
+    useEffect(()=>{
+        setData(prev=>({...prev,...item}))
+    },[item])
+
+    const submitFunction=()=>{
+        if(data.name!="" && data.department!=""){
+            AddEmployeeFunction(data)
+            setData({employeeId:"", name:"",department:""})
+        }
+    }
     return (
-        <Dialog open={open} >
-            {/* <DialogTrigger asChild>
-                <span>Edit
-                </span>
-            </DialogTrigger> */}
+        <Dialog open={open} onOpenChange={()=>setOpenDialog(false)}>
             <DialogContent className="sm:max-w-[425px]" >
                 <DialogHeader>
-                    <DialogTitle>Edit profile</DialogTitle>
+                    <DialogTitle>Edit employee details</DialogTitle>
                     <DialogDescription>
                         Make changes to your profile here. Click save when you're done.
                     </DialogDescription>
@@ -32,17 +45,17 @@ export default function DialogDemo(props: any) {
                         <Label htmlFor="name" className="text-right">
                             Name
                         </Label>
-                        <Input id="name" className="col-span-3" />
+                        <Input id="name" type="text" value={data.name} onChange={(e)=>setData(prev=>({...prev,name:e.target.value}))} className="col-span-3" />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="username" className="text-right">
-                            Username
+                        <Label htmlFor="department" className="text-right">
+                            Department
                         </Label>
-                        <Input id="username" className="col-span-3" />
+                        <Input id="department" type="text" value={data.department} onChange={(e)=>setData(prev=>({...prev,department:e.target.value}))} className="col-span-3" />
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button type="submit" onClick={() => setOpenDialog(false)}>Save changes</Button>
+                    <Button type="submit" onClick={submitFunction}>{data?.employeeId ? "Update":"Save"}</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
