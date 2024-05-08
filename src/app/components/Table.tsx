@@ -11,14 +11,11 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import {
-    CaretSortIcon,
-    ChevronDownIcon,
     DotsHorizontalIcon,
 } from "@radix-ui/react-icons"
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
     PaginationNext,
@@ -26,33 +23,17 @@ import {
 } from "@/components/ui/pagination"
 import {
     DropdownMenu,
-    DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Label } from "@/components/ui/label"
 
 import { Button } from "@/components/ui/button"
+
 import { Search } from "lucide-react"
 import { useEffect, useState } from "react"
 import Dialog from './Dialog'
-
-import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    getPaginationRowModel,
-    useReactTable,
-} from "@tanstack/react-table"
-
-
-
-
-
-
 
 
 export default function TableDemo() {
@@ -104,7 +85,7 @@ export default function TableDemo() {
     const [totalItemsPerPage, stTotalItemsPerPage] = useState(6)
     const [totalNoOfPages, setTotalNoOfPages] = useState(0)
 
-    const AddEmployeeFunction = (obj: any) => {
+    const addEmployeeFunction = (obj: any) => {
         if (obj.employeeId) {
             let newData = data.map((item: any, index: any) => item.employeeId == obj.employeeId ? ({ ...item, ...obj }) : item)
             setData(newData)
@@ -121,7 +102,7 @@ export default function TableDemo() {
         let newData = data.filter((item: any) => item.employeeId != id)
         setData(newData)
     }
-   
+
     const displayItems = (): any[] => {
         let start = currentPage * totalItemsPerPage
         let end = start + totalItemsPerPage
@@ -133,7 +114,7 @@ export default function TableDemo() {
     }
     useEffect(() => {
         setTotalNoOfPages(getTotalNoOfPages())
-    }, [totalItemsPerPage,searchStr])
+    }, [totalItemsPerPage, searchStr])
 
     const handlePrevious = () => {
         if (currentPage > 0) {
@@ -165,13 +146,13 @@ export default function TableDemo() {
                         />
                     </div>
                 </form>
-                    <Button className="m-5 h-8" onClick={() => setOpenDialog(true)}>Add+</Button>
+                <Button className="m-5 h-8" onClick={() => setOpenDialog(true)}>Add+</Button>
             </div>
             <Card className="m-3">
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="font-medium">Sr. No.</TableHead>
+                            <TableHead className="font-medium">Emp. ID</TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead>Department</TableHead>
                             <TableHead className="text-center">Action</TableHead>
@@ -193,7 +174,7 @@ export default function TableDemo() {
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
                                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                            <DropdownMenuItem onSelect={(e) => { e.preventDefault(); setOpenDialog(true); setAddEmp(prev => ({ ...prev, name: item.name, department: item.department, employeeId: item.employeeId })) }} >Edit</DropdownMenuItem>
+                                            <DropdownMenuItem onSelect={(e) => { setOpenDialog(true); setAddEmp(prev => ({ ...prev, ...item })) }} >Edit</DropdownMenuItem>
                                             <DropdownMenuItem onClick={() => DeleteItem(item.employeeId)}>Delete</DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
@@ -201,16 +182,15 @@ export default function TableDemo() {
                             </TableRow>
                         ))}
                     </TableBody>
-
                 </Table>
             </Card>
             <Pagination className="mt-5 p-5 justify-end">
                 <PaginationContent>
-                    <PaginationItem>
+                    <PaginationItem className="cursor-pointer">
                         <PaginationPrevious onClick={handlePrevious} />
                     </PaginationItem>
                     {Array(totalNoOfPages).fill(0).map((_, index) => (
-                        <PaginationItem key={index}>
+                        <PaginationItem key={index} className="cursor-pointer">
                             <PaginationLink
 
                                 isActive={index === currentPage}
@@ -220,12 +200,12 @@ export default function TableDemo() {
                             </PaginationLink>
                         </PaginationItem>
                     ))}
-                    <PaginationItem >
+                    <PaginationItem className="cursor-pointer" >
                         <PaginationNext onClick={handleNext} />
                     </PaginationItem>
                 </PaginationContent>
             </Pagination>
-            <Dialog open={openDialog} AddEmployeeFunction={AddEmployeeFunction} item={addEmp} setAddEmp={setAddEmp} setOpenDialog={setOpenDialog} />
+            <Dialog open={openDialog} addEmployeeFunction={addEmployeeFunction} item={addEmp} setOpenDialog={setOpenDialog} />
         </Card>
     )
 }

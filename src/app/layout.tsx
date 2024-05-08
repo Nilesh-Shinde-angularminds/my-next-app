@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import '@radix-ui/themes/styles.css';
 import { ThemeProvider } from "./components/ThemeProvider";
+import { Theme, ThemePanel } from '@radix-ui/themes';
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,17 +20,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-    <head />
-    <body>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        {children}
-      </ThemeProvider>
-    </body>
-  </html>
+      <head />
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+
+          {children}
+
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

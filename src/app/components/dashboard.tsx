@@ -2,7 +2,9 @@
 import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
 import Table from "./Table"
-import { Button } from "@/components/ui/button"
+// import { Button } from "@/components/ui/button"
+import { Button } from "@radix-ui/themes";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -15,6 +17,7 @@ import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
+import Colorpicker from "./Colorpicker"
 
 
 
@@ -67,7 +70,7 @@ export default function Dashboard() {
                     <SheetTrigger asChild>
                         <Button
                             variant="outline"
-                            size="icon"
+                            size="1"
                             className="shrink-0 md:hidden"
                         >
                             <Menu className="h-5 w-5" />
@@ -117,7 +120,7 @@ export default function Dashboard() {
                     <div className="ml-auto flex-1 sm:flex-initial">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="secondary" size="icon" className="rounded-full">
+                                <Button variant="solid" size="2" className="rounded-full">
                                     <CircleUser className="h-5 w-5" />
                                     <span className="sr-only">Toggle user menu</span>
                                 </Button>
@@ -125,7 +128,7 @@ export default function Dashboard() {
                             <DropdownMenuContent align="end">
                                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem>Settings</DropdownMenuItem>
+                                <DropdownMenuItem ><Link href="/profile">Profile</Link></DropdownMenuItem>
                                 <DropdownMenuItem>Support</DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem>Logout</DropdownMenuItem>
@@ -134,32 +137,33 @@ export default function Dashboard() {
                     </div>
                 </div>
                 {/* <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4"> */}
-                    <div className="ml-auto flex-1 sm:flex-initial">
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="icon">
-                                    <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                                    <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                                    <span className="sr-only">Toggle theme</span>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => setTheme("light")}>
-                                    Light
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setTheme("dark")}>
-                                    Dark
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setTheme("system")}>
-                                    System
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </div>
+                <div className="ml-auto flex-1 sm:flex-initial">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" size="2">
+                                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                                <span className="sr-only">Toggle theme</span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => setTheme("light")}>
+                                Light
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setTheme("dark")}>
+                                Dark
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setTheme("system")}>
+                                System
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
                 {/* </div> */}
 
             </header>
             <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10 container">
+                <Colorpicker />
                 <Table />
             </main>
             <footer className="py-6 md:px-8 md:py-0">
