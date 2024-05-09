@@ -2,8 +2,7 @@
 import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
 import Table from "./Table"
-// import { Button } from "@/components/ui/button"
-import { Button } from "@radix-ui/themes";
+import { Button } from "@/components/ui/button"
 
 import {
     DropdownMenu,
@@ -23,7 +22,6 @@ import { updateCSSVariables } from "../HandleTheme";
 
 export default function Dashboard() {
     const { setTheme, theme } = useTheme()
-
     return (
         <div className="flex min-h-screen w-full flex-col">
 

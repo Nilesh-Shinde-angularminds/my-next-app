@@ -1,17 +1,13 @@
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { updateCSSVariables } from "../HandleTheme"
 import {
     Sheet,
-    SheetClose,
     SheetContent,
-    SheetDescription,
-    SheetFooter,
     SheetHeader,
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
+import { Palette } from "lucide-react"
 
 export default function SheetDemo() {
 
@@ -32,14 +28,13 @@ export default function SheetDemo() {
     return (
         <Sheet key="left">
             <SheetTrigger asChild>
-                <Button variant="outline">Open</Button>
+                <Palette />
+                {/* <span className="sr-only">Theme</span> */}
+                {/* <Button variant="outline">Open</Button> */}
             </SheetTrigger>
             <SheetContent side="left">
                 <SheetHeader>
                     <SheetTitle>Select Theme Color</SheetTitle>
-                    {/* <SheetDescription>
-                        Make changes to your profile here. Click save when you're done.
-                    </SheetDescription> */}
                 </SheetHeader>
                 {
                     colors.map((item: any) => {
@@ -48,9 +43,6 @@ export default function SheetDemo() {
                         )
                     })
                 }
-
-
-
             </SheetContent>
         </Sheet>
     )
