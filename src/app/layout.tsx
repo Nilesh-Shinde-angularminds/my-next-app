@@ -5,6 +5,8 @@ import "./globals.css";
 import { ThemeProvider } from "./components/ThemeProvider";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import AppLayout from "./authGuard/AppLayout";
+import Layout from "./authGuard/Layout";
 
 
 
@@ -30,16 +32,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex min-h-screen w-full flex-col">
-            <Header />
-            <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10 container">
-              {children}
-            </main>
-            <Footer />
-          </div>
-
-
-
+          <Layout>{children}</Layout>
         </ThemeProvider>
       </body>
     </html>

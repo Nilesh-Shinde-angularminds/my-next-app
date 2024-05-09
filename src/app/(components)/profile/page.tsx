@@ -1,9 +1,12 @@
 import React from 'react'
 import Profile from "../../components/Profile"
+import PrivateRoute from '@/app/authGuard/PrivateRoute'
 
 function page() {
     return (
-        <Profile />
+        <PrivateRoute>
+            <Profile/>
+        </PrivateRoute>
     )
 }
 

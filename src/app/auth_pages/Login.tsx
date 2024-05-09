@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -12,10 +13,25 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { useState } from "react"
+import { useRouter } from 'next/navigation';
+
 
 export default function Login() {
-    return (
+    const [data, setData] = useState({
+        email: "rohitsharma45@gmail.com",
+        password: "45404540"
 
+    })
+    const router = useRouter();
+
+
+    function Login(){
+        localStorage.setItem("authToken", JSON.stringify("hdgkjhdfjdfhkghdkfjdgdfgjdh"))
+        router.push('/dashboard')
+    }
+
+    return (
         <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
             <div className="flex items-center justify-center py-12">
                 <Card className="mx-auto max-w-sm">
@@ -30,6 +46,8 @@ export default function Login() {
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
+                                    value={data.email}
+                                    onChange={(e) => setData(prev => ({ ...prev, email: e.target.value }))}
                                     id="email"
                                     type="email"
                                     placeholder="m@example.com"
@@ -43,9 +61,14 @@ export default function Login() {
                                         Forgot your password?
                                     </Link>
                                 </div>
-                                <Input id="password" type="password" required />
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    value={data.password}
+                                    onChange={(e) => setData(prev => ({ ...prev, password: e.target.value }))}
+                                    required />
                             </div>
-                            <Button type="submit" className="w-full">
+                            <Button onClick={Login} type="submit" className="w-full">
                                 Login
                             </Button>
                             <Button variant="outline" className="w-full">
