@@ -1,97 +1,113 @@
+"use client"
 import React, { useState } from 'react';
-import Head from 'next/head';
+
+import {
+    CheckIcon,
+} from "@radix-ui/react-icons"
+import { useTheme } from "next-themes"
+
+import { cn } from "@/lib/utils"
+import { useConfig } from "@/hooks/use-config"
+import { Skeleton } from "@/components/ui/skeleton"
+// import { Theme, themes } from "@/registry/themes"
+import { themes } from '@/hooks/Thems'
+
+// import "@/styles/mdx.css"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+    TooltipProvider,
+} from "@/components/ui/tooltip"
 
 const MyComponent = () => {
-    const [selectedTheme, setSelectedTheme] = useState('default');
+    const [config, setConfig] = useConfig()
+    const { resolvedTheme: mode } = useTheme()
+    const [mounted, setMounted] = React.useState(false)
 
-    const handleThemeChange = (theme: any) => {
-        setSelectedTheme(theme);
-        // Update global CSS based on the selected theme
-        updateGlobalCSS(theme);
-    };
-
-    const updateGlobalCSS = (theme: any) => {
-        const root = document.documentElement;
-        switch (theme) {
-            case 'default':
-                // root.style.setProperty('--background', 'hsl(0, 0%, 100%)');
-                // root.style.setProperty('--foreground', 'hsl(240, 10%, 3.9%)');
-                // root.style.setProperty('--primary', 'hsl(346.8, 77.2%, 49.8%)');
-                // Add more CSS variables for other colors in the default theme
-
-                root.style.setProperty('--background', 'hsl(0, 0%, 100%)');
-                root.style.setProperty('--foreground', 'hsl(240, 10%, 3.9%)');
-                root.style.setProperty('--card', 'hsl(0, 0%, 100%)');
-                root.style.setProperty('--card-foreground', 'hsl(240, 10%, 3.9%)');
-                root.style.setProperty('--popover', 'hsl(0, 0%, 100%)');
-                root.style.setProperty('--popover-foreground', 'hsl(240, 10%, 3.9%)');
-                root.style.setProperty('--primary', 'hsl(346.8, 77.2%, 49.8%)');
-                root.style.setProperty('--primary-foreground', 'hsl(355.7, 100%, 97.3%)');
-                root.style.setProperty('--secondary', 'hsl(240, 4.8%, 95.9%)');
-                root.style.setProperty('--secondary-foreground', 'hsl(240, 5.9%, 10%)');
-                root.style.setProperty('--muted', 'hsl(240, 4.8%, 95.9%)');
-                root.style.setProperty('--muted-foreground', 'hsl(240, 3.8%, 46.1%)');
-                root.style.setProperty('--accent', 'hsl(240, 4.8%, 95.9%)');
-                root.style.setProperty('--accent-foreground', 'hsl(240, 5.9%, 10%)');
-                root.style.setProperty('--destructive', 'hsl(0, 84.2%, 60.2%)');
-                root.style.setProperty('--destructive-foreground', 'hsl(0, 0%, 98%)');
-                root.style.setProperty('--border', 'hsl(240, 5.9%, 90%)');
-                root.style.setProperty('--input', 'hsl(240, 5.9%, 90%)');
-                root.style.setProperty('--ring', 'hsl(346.8, 77.2%, 49.8%)');
-                root.style.setProperty('--radius', '0.5rem');
-
-                break;
-            case 'dark':
-                // root.style.setProperty('--background', 'hsl(20, 14.3%, 4.1%)');
-                // root.style.setProperty('--foreground', 'hsl(0, 0%, 95%)');
-                // root.style.setProperty('--primary', 'hsl(346.8, 77.2%, 49.8%)');
-                // Add more CSS variables for other colors in the dark theme
-
-                root.style.setProperty('--background', 'hsl(0, 0%, 100%)');
-                root.style.setProperty('--foreground', 'hsl(240, 10%, 3.9%)');
-                root.style.setProperty('--card', 'hsl(0, 0%, 100%)');
-                root.style.setProperty('--card-foreground', 'hsl(240, 10%, 3.9%)');
-                root.style.setProperty('--popover', 'hsl(0, 0%, 100%)');
-                root.style.setProperty('--popover-foreground', 'hsl(240, 10%, 3.9%)');
-                root.style.setProperty('--primary', 'hsl(346.8, 77.2%, 49.8%)');
-                root.style.setProperty('--primary-foreground', 'hsl(355.7, 100%, 97.3%)');
-                root.style.setProperty('--secondary', 'hsl(240, 4.8%, 95.9%)');
-                root.style.setProperty('--secondary-foreground', 'hsl(240, 5.9%, 10%)');
-                root.style.setProperty('--muted', 'hsl(240, 4.8%, 95.9%)');
-                root.style.setProperty('--muted-foreground', 'hsl(240, 3.8%, 46.1%)');
-                root.style.setProperty('--accent', 'hsl(240, 4.8%, 95.9%)');
-                root.style.setProperty('--accent-foreground', 'hsl(240, 5.9%, 10%)');
-                root.style.setProperty('--destructive', 'hsl(0, 84.2%, 60.2%)');
-                root.style.setProperty('--destructive-foreground', 'hsl(0, 0%, 98%)');
-                root.style.setProperty('--border', 'hsl(240, 5.9%, 90%)');
-                root.style.setProperty('--input', 'hsl(240, 5.9%, 90%)');
-                root.style.setProperty('--ring', 'hsl(346.8, 77.2%, 49.8%)');
-                root.style.setProperty('--radius', '0.5rem');
-                break;
-            // Add more cases for other themes
-            default:
-                break;
-        }
-    };
+    React.useEffect(() => {
+        setMounted(true)
+    }, [])
 
     return (
-        <div>
-            <Head>
-                {/* Include Shadcn UI stylesheet */}
-                <link rel="stylesheet" href="path_to_shadcn_ui_stylesheet.css" />
-            </Head>
-            <div className="theme-selector">
-                {/* Render theme options */}
-                <button onClick={() => handleThemeChange('default')}>Default</button>
-                <button onClick={() => handleThemeChange('dark')}>Dark</button>
-                {/* Add more theme options as needed */}
-            </div>
-            {/* Components using Shadcn UI */}
-            <div className="shadcn-ui-component">
-                {/* Content */}
-            </div>
+        <div className="mr-2 hidden items-center space-x-0.5 lg:flex">
+            <TooltipProvider>
+                {mounted ? (
+                    <>
+                        {["zinc", "rose", "blue", "green", "orange"].map((color) => {
+                            const theme = themes.find((theme) => theme.name === color)
+                            const isActive = config.theme === color
+
+                            if (!theme) {
+                                return null
+                            }
+
+                            return (
+
+                                <Tooltip key={theme.name}>
+                                    <TooltipTrigger asChild>
+                                        <button
+                                            onClick={() => {
+                                                setConfig({
+                                                    ...config,
+                                                    theme: theme.name,
+                                                });
+                                            }
+                                            }
+                                            className={cn(
+                                                "flex h-9 w-9 items-center justify-center rounded-full border-2 text-xs",
+                                                isActive
+                                                    ? "border-[--theme-primary]"
+                                                    : "border-transparent"
+                                            )}
+                                            style={
+                                                {
+                                                    "--theme-primary": `hsl(${theme?.activeColor[
+                                                        mode === "dark" ? "dark" : "light"
+                                                    ]
+                                                        })`,
+                                                } as React.CSSProperties
+                                            }
+                                        >
+                                            <span
+                                                className={cn(
+                                                    "flex h-6 w-6 items-center justify-center rounded-full bg-[--theme-primary]"
+                                                )}
+                                            >
+                                                {isActive && (
+                                                    <CheckIcon className="h-4 w-4 text-white" />
+                                                )}
+                                            </span>
+                                            <span className="sr-only">{theme.label}</span>
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent
+                                        align="center"
+                                        className="rounded-[0.5rem] bg-zinc-900 text-zinc-50"
+                                    >
+                                        {theme.label}
+                                    </TooltipContent>
+                                </Tooltip>
+
+                            )
+                        })}
+                    </>
+                ) : (
+                    <div className="mr-1 flex items-center gap-4">
+                        <Skeleton className="h-6 w-6 rounded-full" />
+                        <Skeleton className="h-6 w-6 rounded-full" />
+                        <Skeleton className="h-6 w-6 rounded-full" />
+                        <Skeleton className="h-6 w-6 rounded-full" />
+                        <Skeleton className="h-6 w-6 rounded-full" />
+                    </div>
+                )}
+            </TooltipProvider>
         </div>
     );
 };
 
 export default MyComponent;
+
+
+
+

@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import '@radix-ui/themes/styles.css';
 import { ThemeProvider } from "./components/ThemeProvider";
-import { Theme, ThemePanel } from '@radix-ui/themes';
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,15 +23,22 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body>
+      <body id="layout">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          <div className="flex min-h-screen w-full flex-col">
+            <Header />
+            <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10 container">
+              {children}
+            </main>
+            <Footer />
+          </div>
 
-          {children}
+
 
         </ThemeProvider>
       </body>
