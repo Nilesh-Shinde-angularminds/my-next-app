@@ -3,25 +3,33 @@
 // components/PrivateRoute.tsx
 
 import { useRouter, usePathname } from 'next/navigation';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useContext, useState } from 'react';
+import { AuthContext } from '../layout';
+import { getCookie, hasCookie, setCookie } from "cookies-next";
+
 
 interface PrivateRouteProps {
   children: ReactNode;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
+  const { authenticated } = useContext(AuthContext) as any
+  console.log("fsdfssd", authenticated);
   const router = useRouter();
   const pathName = usePathname()
 
+  console.log("pathName", pathName);
+
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('authToken');
-      if (pathName === '/login' && token) {
-        // If user is already authenticated and tries to access login page, redirect to dashboard
+
+      if (pathName.includes("/auth") && authenticated) {
+
         router.push('/dashboard');
-      } else if (pathName !== '/login' && !token) {
-        // If user is not authenticated and tries to access any other page except login, redirect to login
-        router.push('/login');
+      } else if (pathName !== '/auth/login' && !authenticated) {
+        console.log("pused2");
+        router.push('auth/login');
       }
     }
   }, [pathName]);

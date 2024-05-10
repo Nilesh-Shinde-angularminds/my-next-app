@@ -28,7 +28,7 @@ export default function SheetDemo() {
     return (
         <Sheet key="left">
             <SheetTrigger asChild>
-                <Palette />
+                <Palette className="" />
                 {/* <span className="sr-only">Theme</span> */}
                 {/* <Button variant="outline">Open</Button> */}
             </SheetTrigger>

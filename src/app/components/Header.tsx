@@ -2,9 +2,7 @@
 import React from 'react'
 import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
-import Table from "./Table"
 import { Button } from "@/components/ui/button"
-// import { Button } from "@radix-ui/themes";
 
 import {
     DropdownMenu,
@@ -19,34 +17,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
-import { updateCSSVariables } from "../HandleTheme";
-import ThemePicker from "./ThemePicker"
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
 
-import {
-    ChevronLeft,
-    ChevronRight,
-    Copy,
-    CreditCard,
-    File,
-    Home,
-    LineChart,
-    ListFilter,
-    MoreVertical,
-    Package,
-    PanelLeft,
-    Settings,
-    ShoppingCart,
-    Truck,
-    Users2,
-    UsersRound,
-    Palette,
-} from "lucide-react"
 
 function Header() {
     const { setTheme, theme } = useTheme()
@@ -92,44 +63,6 @@ function Header() {
                     Settings
                 </Link>
             </nav>
-            <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col bg-background sm:flex">
-                <TooltipProvider>
-                    <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-                        <Link
-                            href="#"
-                            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-                        >
-                            <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
-                            <span className="sr-only">Acme Inc</span>
-                        </Link>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="/profile"
-                                    className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                                >
-                                    <UsersRound />
-                                    <span className="sr-only">Profile</span>
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right">Profile</TooltipContent>
-                        </Tooltip>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="#"
-                                    className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-                                >
-                                   <ThemePicker/>
-                                   <span className="sr-only">Theme</span> 
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right">Theme</TooltipContent>
-                        </Tooltip>
-
-                    </nav>
-                </TooltipProvider>
-            </aside>
             <Sheet>
                 <SheetTrigger asChild>
                     <Button
@@ -192,7 +125,7 @@ function Header() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem ><Link href="/profile">Profile</Link></DropdownMenuItem>
+                            <Link href="/profile"><DropdownMenuItem >Settings</DropdownMenuItem></Link>
                             <DropdownMenuItem>Support</DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>Logout</DropdownMenuItem>
@@ -220,25 +153,9 @@ function Header() {
                         <DropdownMenuItem onClick={() => setTheme("system")}>
                             System
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => updateCSSVariables("rose")}>
-                            Rose
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => updateCSSVariables("green")}>
-                            Green
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => updateCSSVariables("blue")}>
-                            Blue
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => updateCSSVariables("orange")}>
-                            Orange
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => updateCSSVariables("black")}>
-                            Black
-                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-            <ThemePicker />
             {/* </div> */}
 
         </header>

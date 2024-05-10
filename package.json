@@ -23,6 +23,7 @@
     "@tanstack/react-table": "^8.16.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "cookies-next": "^4.1.1",
     "dialog": "^0.3.1",
     "jotai": "^2.8.0",
     "lucide-react": "^0.378.0",

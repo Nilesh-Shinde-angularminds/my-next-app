@@ -24,6 +24,10 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import Link from 'next/link'
+import { Package2, UsersRound } from 'lucide-react'
+import ThemePicker from './ThemePicker'
 
 
 function Profile() {
@@ -61,6 +65,44 @@ function Profile() {
 
         <div className="items-center justify-center">
             <div className="mx-auto max-w-screen-lg">
+                <aside className="fixed inset-y-0 left-0  hidden w-20 flex-col bg-background sm:flex">
+                    <TooltipProvider>
+                        <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+                            <Link
+                                href="#"
+                                className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+                            >
+                                <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
+                                <span className="sr-only">Acme Inc</span>
+                            </Link>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href="/profile"
+                                        className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                    >
+                                        <UsersRound />
+                                        <span className="sr-only">Profile</span>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right">Profile</TooltipContent>
+                            </Tooltip>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href="#"
+                                        className="flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8" /* bg-accent */
+                                    >
+                                        <ThemePicker />
+                                        <span className="sr-only">Theme</span>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right">Theme</TooltipContent>
+                            </Tooltip>
+
+                        </nav>
+                    </TooltipProvider>
+                </aside>
                 <Tabs defaultValue="account" >
                     <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger value="account">My Profile</TabsTrigger>
@@ -100,7 +142,7 @@ function Profile() {
                                     {editPersonalInfo ? <Input onChange={(e) => handleInputPersonalInfo("bio", e)} value={personalInfo.bio} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.bio}.</p>}
 
                                 </div>
-                                <div className="p-2 col-span-1 md:col-span-1 lg:col-span-1">
+                                <div className=" col-span-1 md:col-span-1 lg:col-span-1">
                                     <small className="p-2 text-sm font-medium leading-none">Last Name</small>
                                     {editPersonalInfo ? <Input onChange={(e) => handleInputPersonalInfo("lastName", e)} value={personalInfo.lastName} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.lastName}</p>}
 

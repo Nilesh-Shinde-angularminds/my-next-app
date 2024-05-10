@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/card"
 import { useState } from "react"
 import { useRouter } from 'next/navigation';
+import { getCookie, hasCookie, setCookie } from "cookies-next";
+
 
 
 export default function Login() {
@@ -26,8 +28,9 @@ export default function Login() {
     const router = useRouter();
 
 
-    function Login(){
-        localStorage.setItem("authToken", JSON.stringify("hdgkjhdfjdfhkghdkfjdgdfgjdh"))
+    function Login() {
+
+        setCookie("authToken", "hkjhkhjkhkhkjhkhkhhk")
         router.push('/dashboard')
     }
 
