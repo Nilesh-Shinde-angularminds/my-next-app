@@ -1,7 +1,9 @@
-export const updateCSSVariables = (/* isDark: boolean, */ className: string) => {
+import { getCookie, hasCookie, setCookie } from "cookies-next";
+export const updateCSSVariables = (/* isDark: boolean, */ className: any) => {
+
     const root = document.getElementById("layout");
-    console.log("root", root, className);
-    // root?.className="className" 
+    setCookie("theme",className)
+    
     let allThemes = [
         "zinc",
         "slate",

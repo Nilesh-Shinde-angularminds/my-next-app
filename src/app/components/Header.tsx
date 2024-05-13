@@ -3,6 +3,8 @@ import React from 'react'
 import Link from "next/link"
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { getCookie, hasCookie, setCookie, deleteCookie } from "cookies-next";
+
 
 import {
     DropdownMenu,
@@ -17,10 +19,18 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
+import { useRouter } from 'next/navigation'
 
 
 function Header() {
     const { setTheme, theme } = useTheme()
+    const router = useRouter()
+
+
+    function logout(){
+        deleteCookie('authToken')
+        router.push("/auth/login")
+    }
 
     return (
         <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 z-10" >
@@ -128,7 +138,7 @@ function Header() {
                             <Link href="/profile"><DropdownMenuItem >Settings</DropdownMenuItem></Link>
                             <DropdownMenuItem>Support</DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>Logout</DropdownMenuItem>
+                            <DropdownMenuItem onClick={()=>logout()}>Logout</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

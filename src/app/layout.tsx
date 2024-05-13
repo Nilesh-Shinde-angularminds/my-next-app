@@ -37,7 +37,6 @@ export default function RootLayout({
   useEffect(() => {
     let cookiess = hasCookie("authToken")
     setAuthenticated(Boolean(cookiess))
-    console.log("gdfgdfgdfgdffffffffffffffffffffffffffffffff");
   }, [hasCookie("authToken"), authenticated])
 
 

@@ -8,6 +8,7 @@ import AppLayout from './AppLayout';
 import AuthLaout from './AuthLayout';
 import { getCookie, hasCookie, setCookie } from "cookies-next";
 import { AuthContext } from '../layout';
+import { updateCSSVariables } from '../HandleTheme';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -28,18 +29,23 @@ const Layout: React.FC<PrivateRouteProps> = ({ children }) => {
   // }, [])
 
   // const token = localStorage.getItem('authToken');
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     // const token = localStorage.getItem('authToken');
-  //     if (pathName === '/login' && token) {
-  //       // If user is already authenticated and tries to access login page, redirect to dashboard
-  //       router.push('/dashboard');
-  //     } else if (pathName !== '/login' && !token) {
-  //       // If user is not authenticated and tries to access any other page except login, redirect to login
-  //       router.push('/login');
-  //     }
-  //   }
-  // }, [pathName]);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      let theme = getCookie('theme')
+      updateCSSVariables(theme)
+
+      if (pathName.includes("/auth") && authenticated) {
+        router.push('/dashboard');
+      }
+       else if (pathName.includes("/auth") == !authenticated) {
+        router.push(pathName);
+      }
+      else if (!pathName.includes("/auth") == !authenticated){
+        router.push("/auth/login");
+      }
+      
+    }
+  }, [pathName])
 
 
 
