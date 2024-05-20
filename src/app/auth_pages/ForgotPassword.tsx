@@ -43,8 +43,9 @@ function ForgotPassword() {
                     <div className="mt-4 text-center text-sm">
                         Go to{" "}
                         <Link href="signup" className="underline">
-                            Sign up page
+                            {"Sign up"}
                         </Link>
+                        &nbsp; page
                     </div>
                 </CardContent>
             </Card>

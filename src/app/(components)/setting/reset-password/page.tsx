@@ -1,9 +1,9 @@
+import ResetPassword from '@/app/components/ResetPassword'
 import React from 'react'
-import Profile from "../../components/Profile"
 
 function page() {
     return (
-        <Profile />
+        <ResetPassword />
     )
 }
 

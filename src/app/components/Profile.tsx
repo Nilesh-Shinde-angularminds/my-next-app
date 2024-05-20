@@ -3,49 +3,52 @@ import React, { useState } from 'react'
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-    CardDescription,
-    CardFooter,
-} from "@/components/ui/card"
+import { Card } from "@/components/ui/card"
 
 import {
     Avatar,
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
-import { Label } from "@/components/ui/label"
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from "@/components/ui/tabs"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import Link from 'next/link'
-import { Package2, UsersRound } from 'lucide-react'
-import ThemePicker from './ThemePicker'
 
+import { format } from "date-fns"
+import { Calendar as CalendarIcon } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { Calendar } from "@/components/ui/calendar"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+interface personalInfo {
+    firstName: string;
+    lastName: string;
+    emailId: string;
+    phone: string;
+    dob: Date | undefined;
+    bio: string;
+    gender: string;
+}
 
 function Profile() {
 
     const [editPersonalInfo, setEditPersonalInfo] = useState(false)
     const [editAddress, setEditAddress] = useState(false)
 
+
     const [personalInfo, setPersonalInfo] = useState({
         firstName: "Virat",
         lastName: "Kohli",
         emailId: "Viratkohli18@gmail.com",
         phone: "+91 9623273435",
-        dob: "29-05-1989",
+        dob: undefined || new Date(),
         bio: "Product Engineer with 5year experience.",
         gender: "male",
 
     })
-
     const [addressInfo, setAddressInfo] = useState({
         country: "India",
         city: "Mumbai, Maharashtra",
@@ -65,172 +68,109 @@ function Profile() {
 
         <div className="items-center justify-center">
             <div className="mx-auto max-w-screen-lg">
-                <aside className="fixed inset-y-0 left-0  hidden w-20 flex-col bg-background sm:flex">
-                    <TooltipProvider>
-                        <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-                            <Link
-                                href="#"
-                                className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-                            >
-                                <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
-                                <span className="sr-only">Acme Inc</span>
-                            </Link>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        href="/profile"
-                                        className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                <Card className="flex p-3">
+                    <div className="flex items-center justify-center">
+                        <Avatar className="h-20 w-20" >
+                            <AvatarImage src="https://github.com/shadcn.png" />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                    </div>
+                    <div className="ml-10">
+                        <small className="p-1 text-sm font-medium leading-none">Virat Kohli</small>
+                        <p className="p-1 text-sm text-muted-foreground">Production Engineer</p>
+                        <p className="p-1 text-sm text-muted-foreground">Los Angeles, California, USA</p>
+                    </div>
+                </Card>
+
+                <Card className=" p-3 mt-5 ">
+                    <div className="text-lg font-semibold">Personal Information</div>
+                    <div className="p-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div className="col-span-1 md:col-span-3 lg:col-span-1">
+                            <small className="p-2 text-sm font-medium leading-none">First Name</small>
+                            {editPersonalInfo ? <Input className='mb-5' onChange={(e) => handleInputPersonalInfo("lastName", e)} value={personalInfo.firstName} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.firstName}</p>}
+
+                            <small className="p-2 text-sm font-medium leading-none">Email Address</small>
+                            {editPersonalInfo ? <Input className='mb-5' onChange={(e) => handleInputPersonalInfo("emailId", e)} value={personalInfo.emailId} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.emailId}</p>}
+
+
+                            <small className="p-2 text-sm font-medium leading-none">Date of Birth</small>
+                            {editPersonalInfo ? <Popover >
+                                <PopoverTrigger className="mb-5" asChild>
+                                    <Button
+                                        variant={"outline"}
+                                        className={cn(
+                                            "w-[270px] justify-start text-left font-normal",
+                                            !personalInfo.dob && "text-muted-foreground"
+                                        )}
                                     >
-                                        <UsersRound />
-                                        <span className="sr-only">Profile</span>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent side="right">Profile</TooltipContent>
-                            </Tooltip>
-                            <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        href="#"
-                                        className="flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8" /* bg-accent */
-                                    >
-                                        <ThemePicker />
-                                        <span className="sr-only">Theme</span>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent side="right">Theme</TooltipContent>
-                            </Tooltip>
-
-                        </nav>
-                    </TooltipProvider>
-                </aside>
-                <Tabs defaultValue="account" >
-                    <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="account">My Profile</TabsTrigger>
-                        <TabsTrigger value="password">Password</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="account">
-                        <Card className="flex p-3">
-                            <div className="flex items-center justify-center">
-                                <Avatar className="h-20 w-20" >
-                                    <AvatarImage src="https://github.com/shadcn.png" />
-                                    <AvatarFallback>CN</AvatarFallback>
-                                </Avatar>
-                            </div>
-                            <div className="ml-10">
-                                <small className="p-1 text-sm font-medium leading-none">Virat Kohli</small>
-                                <p className="p-1 text-sm text-muted-foreground">Production Engineer</p>
-                                <p className="p-1 text-sm text-muted-foreground">Los Angeles, California, USA</p>
-                            </div>
-                        </Card>
-
-                        <Card className=" p-3 mt-5 ">
-                            <div className="text-lg font-semibold">Personal Information</div>
-                            <div className="p-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                <div className="col-span-1 md:col-span-3 lg:col-span-1">
-                                    <small className="p-2 text-sm font-medium leading-none">First Name</small>
-                                    {editPersonalInfo ? <Input onChange={(e) => handleInputPersonalInfo("lastName", e)} value={personalInfo.firstName} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.firstName}</p>}
-
-                                    <small className="p-2 text-sm font-medium leading-none">Email Address</small>
-                                    {editPersonalInfo ? <Input onChange={(e) => handleInputPersonalInfo("emailId", e)} value={personalInfo.emailId} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.emailId}</p>}
+                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                        {personalInfo.dob ? format(personalInfo.dob, "PPP") : <span>Pick a date</span>}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0">
+                                    <Calendar
+                                        selected={personalInfo.dob}
+                                        mode="single"
+                                        onSelect={(date: any) => setPersonalInfo(prev => ({ ...prev, dob: date }))}
+                                        initialFocus
+                                    />
+                                </PopoverContent>
+                            </Popover> : <p className="p-2 text-sm text-muted-foreground">{format(personalInfo.dob, "PPP")}</p>}
 
 
-                                    <small className="p-2 text-sm font-medium leading-none">Date of Birth</small>
-                                    {editPersonalInfo ? <Input onChange={(e) => handleInputPersonalInfo("dob", e)} value={personalInfo.dob} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.dob}</p>}
+                            <small className="p-2 text-sm font-medium leading-none">Bio</small>
+                            {editPersonalInfo ? <Input className='mb-5' onChange={(e) => handleInputPersonalInfo("bio", e)} value={personalInfo.bio} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.bio}.</p>}
 
+                        </div>
+                        <div className=" col-span-1 md:col-span-1 lg:col-span-1">
+                            <small className="p-2 text-sm font-medium leading-none">Last Name</small>
+                            {editPersonalInfo ? <Input className='mb-5' onChange={(e) => handleInputPersonalInfo("lastName", e)} value={personalInfo.lastName} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.lastName}</p>}
 
-                                    <small className="p-2 text-sm font-medium leading-none">Bio</small>
-                                    {editPersonalInfo ? <Input onChange={(e) => handleInputPersonalInfo("bio", e)} value={personalInfo.bio} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.bio}.</p>}
+                            <small className="p-2 text-sm font-medium leading-none">Phone</small>
+                            {editPersonalInfo ? <Input className='mb-5' onChange={(e) => handleInputPersonalInfo("phone", e)} value={personalInfo.phone} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.phone}</p>}
 
-                                </div>
-                                <div className=" col-span-1 md:col-span-1 lg:col-span-1">
-                                    <small className="p-2 text-sm font-medium leading-none">Last Name</small>
-                                    {editPersonalInfo ? <Input onChange={(e) => handleInputPersonalInfo("lastName", e)} value={personalInfo.lastName} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.lastName}</p>}
+                            <small className="p-2 text-sm font-medium leading-none">Gender</small>
+                            {editPersonalInfo ?
+                                <RadioGroup defaultValue={personalInfo.gender} className='flex mt-2 p-2' >
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="male" id="r1" onClick={(e) => handleInputPersonalInfo("gender", e)} />
+                                        <Label htmlFor="r1">Male</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="female" id="r2" onClick={(e) => handleInputPersonalInfo("gender", e)} />
+                                        <Label htmlFor="r2">Female</Label>
+                                    </div>
+                                </RadioGroup> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.gender}</p>}
+                        </div>
+                        <div className="col-span-1 md:col-span-2 lg:col-span-1">
+                            <Button className="float-right" onClick={() => setEditPersonalInfo(prev => !prev)}>{editPersonalInfo ? "save" : "Edit"}</Button>
+                        </div>
+                    </div>
+                </Card>
+                <Card className=" p-3 mt-5 ">
+                    <div className="text-lg font-semibold">Address</div>
+                    <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div className="p-2 col-span-1 md:col-span-2 lg:col-span-1">
+                            <small className="p-2 text-sm font-medium leading-none">Country</small>
+                            {editAddress ? <Input className='mb-5' onChange={(e) => handleInputAddress("country", e)} value={addressInfo.country} /> : <p className="p-2 text-sm text-muted-foreground">{addressInfo.country}</p>}
 
-                                    <small className="p-2 text-sm font-medium leading-none">Phone</small>
-                                    {editPersonalInfo ? <Input onChange={(e) => handleInputPersonalInfo("phone", e)} value={personalInfo.phone} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.phone}</p>}
+                            <small className="p-2 text-sm font-medium leading-none">Postal Code</small>
+                            {editAddress ? <Input className='mb-5' onChange={(e) => handleInputAddress("postalCode", e)} value={addressInfo.postalCode} /> : <p className="p-2 text-sm text-muted-foreground">{addressInfo.postalCode}</p>}
 
-                                    <small className="p-2 text-sm font-medium leading-none">Gender</small>
-                                    {editPersonalInfo ? <Input onChange={(e) => handleInputPersonalInfo("gender", e)} value={personalInfo.gender} /> : <p className="p-2 text-sm text-muted-foreground">{personalInfo.gender}</p>}
-                                </div>
-                                <div className="col-span-1 md:col-span-2 lg:col-span-1">
-                                    <Button className="float-right" onClick={() => setEditPersonalInfo(prev => !prev)}>{editPersonalInfo ? "save" : "Edit"}</Button>
-                                </div>
-                            </div>
-                        </Card>
-                        <Card className=" p-3 mt-5 ">
-                            <div className="text-lg font-semibold">Address</div>
-                            <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                <div className="p-2 col-span-1 md:col-span-2 lg:col-span-1">
-                                    <small className="p-2 text-sm font-medium leading-none">Country</small>
-                                    {editAddress ? <Input onChange={(e) => handleInputAddress("country", e)} value={addressInfo.country} /> : <p className="p-2 text-sm text-muted-foreground">{addressInfo.country}</p>}
+                        </div>
+                        <div className="p-2 col-span-1 md:col-span-1 lg:col-span-1">
+                            <small className="p-2 text-sm font-medium leading-none">City</small>
+                            {editAddress ? <Input className='mb-5' onChange={(e) => handleInputAddress("city", e)} value={addressInfo.city} /> : <p className="p-2 text-sm text-muted-foreground">{addressInfo.city}</p>}
 
-                                    <small className="p-2 text-sm font-medium leading-none">Postal Code</small>
-                                    {editAddress ? <Input onChange={(e) => handleInputAddress("postalCode", e)} value={addressInfo.postalCode} /> : <p className="p-2 text-sm text-muted-foreground">{addressInfo.postalCode}</p>}
+                            <small className="p-2 text-sm font-medium leading-none">TaxID</small>
+                            {editAddress ? <Input className='mb-5' onChange={(e) => handleInputAddress("taxId", e)} value={addressInfo.taxId} /> : <p className="p-2 text-sm text-muted-foreground">{addressInfo.taxId}</p>}
+                        </div>
+                        <div className="col-span-1 md:col-span-2 lg:col-span-1">
+                            <Button className="float-right" onClick={() => setEditAddress(prev => !prev)}>{editAddress ? "Save" : "Edit"}</Button>
+                        </div>
+                    </div>
+                </Card>
 
-                                </div>
-                                <div className="p-2 col-span-1 md:col-span-1 lg:col-span-1">
-                                    <small className="p-2 text-sm font-medium leading-none">City</small>
-                                    {editAddress ? <Input onChange={(e) => handleInputAddress("city", e)} value={addressInfo.city} /> : <p className="p-2 text-sm text-muted-foreground">{addressInfo.city}</p>}
-
-                                    <small className="p-2 text-sm font-medium leading-none">TaxID</small>
-                                    {editAddress ? <Input onChange={(e) => handleInputAddress("taxId", e)} value={addressInfo.taxId} /> : <p className="p-2 text-sm text-muted-foreground">{addressInfo.taxId}</p>}
-
-                                </div>
-                                <div className="col-span-1 md:col-span-2 lg:col-span-1">
-                                    <Button className="float-right" onClick={() => setEditAddress(prev => !prev)}>{editAddress ? "Save" : "Edit"}</Button>
-                                </div>
-                            </div>
-                        </Card>
-                    </TabsContent>
-                    <TabsContent value="password">
-                        <Card className='px-20 py-5'>
-                            <CardHeader>
-                                <CardTitle>Change password</CardTitle>
-                                <CardDescription>
-                                    Change your password here. After saving, you'll be logged out.
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-2 ">
-                                <div className="space-y-1">
-                                    <Label htmlFor="current">Current password</Label>
-                                    <Input id="current" type="password" />
-                                </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="new">New password</Label>
-                                    <Input id="new" type="password" />
-                                </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="new">Confirm password</Label>
-                                    <Input id="new" type="password" />
-                                </div>
-                            </CardContent>
-                            <CardFooter>
-                                <Button>Save password</Button>
-                            </CardFooter>
-                        </Card>
-                        {/* <CardHeader>
-                                <CardTitle className='mb-4'>Update password</CardTitle>
-                                <CardDescription>
-                                    Change your password here. After saving, you'll be logged out.
-                                </CardDescription>
-                            </CardHeader>
-                            <Card  className='p-10 m-5 '>
-                            <CardContent className="space-y-2">
-                                <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
-                                    <div className="sm:col-span-1 self-center justify-self-start"><Label htmlFor="new">Current password</Label></div>
-                                    <div className="sm:col-span-5 "><Input id="current" type="password" /></div>
-                                    <div className="sm:col-span-1 self-center justify-self-start"><Label htmlFor="new">New password</Label></div>
-                                    <div className="sm:col-span-5  "><Input id="current" type="password" /></div>
-                                    <div className="sm:col-span-1 self-center justify-self-start"><Label htmlFor="new">Confirm password</Label></div>
-                                    <div className=" sm:col-span-5  "><Input id="current" type="password" /></div>
-                                </div>
-                            </CardContent>
-                            <CardFooter className='flex items-center justify-end pr-5'>
-                                <Button>Save password</Button>
-                            </CardFooter>
-                            </Card> */}
-                    </TabsContent>
-                </Tabs>
             </div>
         </div>
     )

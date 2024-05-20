@@ -27,7 +27,7 @@ function Header() {
     const router = useRouter()
 
 
-    function logout(){
+    function logout() {
         deleteCookie('authToken')
         router.push("/auth/login")
     }
@@ -43,35 +43,12 @@ function Header() {
                     <span className="sr-only">Acme Inc</span>
                 </Link>
                 <Link
-                    href="dashboard"
+                    href="/dashboard"
                     className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                     Dashboard
                 </Link>
-                <Link
-                    href="#"
-                    className="text-muted-foreground transition-colors hover:text-foreground"
-                >
-                    Orders
-                </Link>
-                <Link
-                    href="#"
-                    className="text-muted-foreground transition-colors hover:text-foreground"
-                >
-                    Products
-                </Link>
-                <Link
-                    href="#"
-                    className="text-muted-foreground transition-colors hover:text-foreground"
-                >
-                    Customers
-                </Link>
-                <Link
-                    href="#"
-                    className="text-foreground transition-colors hover:text-foreground"
-                >
-                    Settings
-                </Link>
+
             </nav>
             <Sheet>
                 <SheetTrigger asChild>
@@ -94,37 +71,17 @@ function Header() {
                             <span className="sr-only">Acme Inc</span>
                         </Link>
                         <Link
-                            href="#"
+                            href="/dashboard"
                             className="text-muted-foreground hover:text-foreground"
                         >
                             Dashboard
                         </Link>
-                        <Link
-                            href="#"
-                            className="text-muted-foreground hover:text-foreground"
-                        >
-                            Orders
-                        </Link>
-                        <Link
-                            href="#"
-                            className="text-muted-foreground hover:text-foreground"
-                        >
-                            Products
-                        </Link>
-                        <Link
-                            href="#"
-                            className="text-muted-foreground hover:text-foreground"
-                        >
-                            Customers
-                        </Link>
-                        <Link href="#" className="hover:text-foreground">
-                            Settings
-                        </Link>
+
                     </nav>
                 </SheetContent>
             </Sheet>
-            <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4 cursor-pointer">
-                <div className="ml-auto flex-1 sm:flex-initial">
+            <div className="ml-auto flex sm:flex-initial">
+                <div className="mx-2">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="secondary" size="sm" className="rounded-full">
@@ -135,37 +92,40 @@ function Header() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <Link href="/profile"><DropdownMenuItem >Settings</DropdownMenuItem></Link>
+                            <Link href="/setting/profile"><DropdownMenuItem >Settings</DropdownMenuItem></Link>
                             <DropdownMenuItem>Support</DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={()=>logout()}>Logout</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => logout()}>Logout</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+                <div>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" size="sm">
+                                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                                <span className="sr-only">Toggle theme</span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => setTheme("light")}>
+                                Light
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setTheme("dark")}>
+                                Dark
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setTheme("system")}>
+                                System
+                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
             </div>
             {/* <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4"> */}
-            <div className="ml-auto flex-1 sm:flex-initial cursor-pointer">
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="sm">
-                            <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                            <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                            <span className="sr-only">Toggle theme</span>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => setTheme("light")}>
-                            Light
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme("dark")}>
-                            Dark
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme("system")}>
-                            System
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </div>
+            {/* <div className="ml-auto flex-1 sm:flex-initial cursor-pointer"> */}
+            {/* */}
+            {/* </div> */}
             {/* </div> */}
 
         </header>
